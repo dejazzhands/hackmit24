@@ -25,3 +25,16 @@ body {
     text-wrap: balance;
   }
 }
+
+h1 {
+  font-size: 4rem;
+  font-weight: bold;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.center-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
