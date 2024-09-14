@@ -1,134 +1,80 @@
-import { scaleSequential, selectAll, select, scaleLinear, axisLeft, lineRadial as d3LineRadial } from 'd3'
-import { returnAnimationStatus } from './animationStatus'
+"use client";
+import React, { useEffect, useRef } from 'react';
+import * as d3 from 'd3';
 
-export const visual = function (analyser, colors) {
-  analyser.fftSize = 2048
+const VisualComponent = () => {
+  const svgRef = useRef(null);
 
-  const dataArray = analyser.getFloatTimeDomainData ? new Float32Array(analyser.fftSize) : [...Array(analyser.fftSize)].map(el => 0)
+  useEffect(() => {
+    const width = 928;
+    const height = 500;
+    const n = 20; // number of layers
+    const m = 200; // number of samples per layer
 
-  const h = window.innerHeight
-  const w = window.innerWidth
-
-  let svg
-
-  if (document.getElementById('visualizer-svg')) {
-    selectAll('svg > *').remove()
-  } else {
-    selectAll('svg').remove()
-    svg = select('body').append('svg')
-      .attr('width', w)
-      .attr('height', h)
-      .attr('id', 'visualizer-svg')
-      .append('g')
-      .attr('transform', 'translate(' + w / 2 + ',' + h / 2 + ')')
-  }
-
-  const y = scaleLinear()
-    .domain([1, -1])
-    .range([0, h])
-
-  svg.append('g')
-    .attr('class', 'y axis')
-    .call(axisLeft(y))
-    .attr('color', 'transparent')
-
-  const angle = scaleLinear()
-    .domain([0, dataArray.length - 1])
-    .range([Math.PI, (Math.PI * 3)])
-
-  const radius = scaleLinear()
-    .domain([-1, 1])
-    .range([0, (w > h) ? (w / 2) : (h / 2)])
-
-  const lineRadial = d3LineRadial()
-    .radius(function (d) { return (radius(d)) })
-    .angle(function (d, i) { return (angle(i)) })
-
-  const colorScale = scaleSequential(colors)
-    .domain([0, 299])
-
-  const mirrorColorScale = scaleSequential(colors)
-    .domain([599, 300])
-
-  const loopingColor = (num) => {
-    return num < 300 ? colorScale(num) : mirrorColorScale(num)
-  }
-
-  let colorOffset = 0
-
-  const setColorOffset = () => {
-    colorOffset = (colorOffset + 1) % 600
-  }
-
-  let currentCount = 0
-  currentCount += returnAnimationStatus()
-
-  function renderFrame () {
-    if (currentCount === returnAnimationStatus()) {
-      requestAnimationFrame(renderFrame)
+    function bump(a, n) {
+      const x = 1 / (0.1 + Math.random());
+      const y = 2 * Math.random() - 0.5;
+      const z = 10 / (0.1 + Math.random());
+      for (let i = 0; i < n; ++i) {
+        const w = (i / n - y) * z;
+        a[i] += x * Math.exp(-w * w);
+      }
     }
 
-    setColorOffset()
-
-    if (analyser.getFloatTimeDomainData) {
-      analyser.getFloatTimeDomainData(dataArray)
-
-      svg.select('path')
-        .datum(dataArray)
-        .attr('d', lineRadial)
-        .attr('stroke', loopingColor(colorOffset))
-        .attr('stroke-width', (w > h) ? (w / 360) : (h / 360))
-    } else {
-      selectAll('svg text').remove()
-
-      svg.append('text')
-        .text('Waveform Circles visualizer utilizes a Web Audio API')
-        .attr('y', -((h * 1) / 20))
-        .attr('x', 0)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', w / 48)
-        .attr('font-family', '"Open Sans", sans-serif')
-        .attr('opacity', 0.8)
-        .attr('fill', loopingColor(colorOffset))
-        .attr('stroke', 'black')
-        .attr('stroke-width', w * 0.0005)
-
-      svg.append('text')
-        .text('method not compatible with your web browser.')
-        .attr('y', (-((h * 1) / 20)) + (w / 48) + 6)
-        .attr('x', 0)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', w / 48)
-        .attr('font-family', '"Open Sans", sans-serif')
-        .attr('opacity', 0.8)
-        .attr('fill', loopingColor(colorOffset))
-        .attr('stroke', 'black')
-        .attr('stroke-width', w * 0.0005)
-
-      svg.append('text')
-        .text('Please select a different visualizer, or consider using Google Chrome,')
-        .attr('y', (-((h * 1) / 20)) + (2 * (w / 48)) + 18)
-        .attr('x', 0)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', w / 56)
-        .attr('font-family', '"Open Sans", sans-serif')
-        .attr('opacity', 0.8)
-        .attr('fill', loopingColor(colorOffset))
-        .attr('stroke', 'black')
-        .attr('stroke-width', w * 0.0003)
-
-      svg.append('text')
-        .text('Microsoft Edge, Mozilla Firefox or Opera for wider compatiblity.')
-        .attr('y', (-((h * 1) / 20)) + (2 * (w / 48)) + (w / 56) + 24)
-        .attr('x', 0)
-        .attr('text-anchor', 'middle')
-        .attr('font-size', w / 56)
-        .attr('font-family', '"Open Sans", sans-serif')
-        .attr('opacity', 0.8)
-        .attr('fill', loopingColor(colorOffset))
-        .attr('stroke', 'black')
-        .attr('stroke-width', w * 0.0003)
+    function bumps(n, m) {
+      const a = Array(n).fill(0);
+      for (let i = 0; i < m; ++i) bump(a, n);
+      return a;
     }
-  }
-  renderFrame()
-}
+
+    const x = d3.scaleLinear().domain([0, m - 1]).range([0, width]);
+    const y = d3.scaleLinear().domain([0, 1]).range([height, 0]);
+    const z = d3.interpolateCool; /* CHANGE COLOR FOR SPIDERMAN MODE */
+
+    const area = d3.area()
+      .x((d, i) => x(i))
+      .y0(d => y(d[0]))
+      .y1(d => y(d[1]));
+
+    const stack = d3.stack()
+      .keys(d3.range(n).map(String))
+      .offset(d3.stackOffsetWiggle)
+      .order(d3.stackOrderNone);
+
+    function randomize() {
+      const layers = stack(d3.transpose(Array.from({ length: n }, () => bumps(m, 10))));
+      y.domain([
+        d3.min(layers, l => d3.min(l, d => d[0])),
+        d3.max(layers, l => d3.max(l, d => d[1]))
+      ]);
+      return layers;
+    }
+
+    const svg = d3.select(svgRef.current)
+      .attr("viewBox", [0, 0, width, height])
+      .attr("width", width)
+      .attr("height", height)
+      .attr("style", "max-width: 100%; height: auto;");
+
+    const path = svg.selectAll("path")
+      .data(randomize)
+      .join("path")
+      .attr("d", area)
+      .attr("fill", () => z(Math.random()));
+
+    function update() {
+      path.data(randomize)
+        .transition()
+        .delay(0) /*CHANGE DELAY TO DEPEND ON HEART RATE*/
+        .duration(100) /* CHANGE DURATION */
+        .attr("d", area);
+    }
+
+    d3.interval(update, 100); /* CHANGE INTERVAL */
+
+  }, []);
+
+  return <svg ref={svgRef}></svg>;
+};
+
+export default VisualComponent;

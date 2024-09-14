@@ -1,5 +1,6 @@
 import React from 'react';
 import Barchart from './components/barchart';
+import VisualComponent from './components/visual';
 
 export default function Home() {
   return (
@@ -7,8 +8,9 @@ export default function Home() {
       <div className="center-screen">
         <h1>Beating Hearts</h1>
       </div>
-      
-      <Barchart />
+      <div className="center-screen">
+        <VisualComponent />
+      </div>
     </div>
   );
 }
