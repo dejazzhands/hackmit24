@@ -20,11 +20,7 @@ const geistMono = localFont({
   variable: "--font-geist-mono",
   weight: "100 900",
 });
-const roboto = Roboto({
-  variable: "--font-roboto",
-  weight: "300",
-  preload: true,
-});
+
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -40,7 +36,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           <SignedOut>
             <SignInButton />
