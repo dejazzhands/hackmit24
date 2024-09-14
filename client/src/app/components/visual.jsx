@@ -6,8 +6,8 @@ const VisualComponent = () => {
   const svgRef = useRef(null);
 
   useEffect(() => {
-    const width = 928;
-    const height = 500;
+    const width = 1928;
+    const height = 900;
     const n = 20; // number of layers
     const m = 200; // number of samples per layer
 
@@ -29,7 +29,7 @@ const VisualComponent = () => {
 
     const x = d3.scaleLinear().domain([0, m - 1]).range([0, width]);
     const y = d3.scaleLinear().domain([0, 1]).range([height, 0]);
-    const z = d3.interpolateCool; /* CHANGE COLOR FOR SPIDERMAN MODE */
+    const z = false ? d3.interpolateRgb("red", "blue") : d3.interpolateCool; /* CHANGE COLOR FOR SPIDERMAN MODE */
 
     const area = d3.area()
       .x((d, i) => x(i))
