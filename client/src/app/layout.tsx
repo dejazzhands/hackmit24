@@ -2,13 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
+import SignInBtn from "./components/SignInBtn";
+import TopBar from "./components/TopBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -22,8 +18,9 @@ const geistMono = localFont({
 });
 const roboto = Roboto({
   variable: "--font-roboto",
-  weight: "300",
+  weight: "400",
   preload: true,
+  subsets: ["latin-ext"],
 });
 
 export const metadata: Metadata = {
@@ -40,15 +37,18 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body
-          className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased`}
+          className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased grid min-h-[100dvh] grid-rows-[auto_1fr_auto]`}
         >
           <SignedOut>
-            <SignInButton />
+            <div />
+            <div className="flex justify-center items-center">
+              <SignInBtn />
+            </div>
           </SignedOut>
           <SignedIn>
-            <UserButton />
+            <TopBar />
+            {children}
           </SignedIn>
-          {children}
         </body>
       </html>
     </ClerkProvider>
