@@ -1,5 +1,4 @@
 import React from 'react';
-import Barchart from './components/barchart';
 import VisualComponent from './components/visual';
 
 export default function Home() {
