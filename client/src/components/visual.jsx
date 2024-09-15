@@ -1,19 +1,34 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 import { useSpidermanContext } from "@/context/useSpidermanContext";
 
 const width = 1928;
 const height = 900;
 const n = 20; // number of layers
-const m = 200; // number of samples per 
+const m = 200; // number of samples per
 
 const VisualComponent = () => {
   const { isSpiderman } = useSpidermanContext();
   const svgRef = useRef(null);
+  const [data, setData] = useState(null);
+
+  console.log(data);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("/api/visual", {
+        method: "GET",
+      });
+      const data = await response.json();
+      if (!response.ok) setData(null);
 
+      setData(data);
+    };
+    fetchData();
+  }, []);
+
+  useEffect(() => {
     function bump(a, n) {
       const x = 1 / (0.1 + Math.random());
       const y = 2 * Math.random() - 0.5;
@@ -35,7 +50,9 @@ const VisualComponent = () => {
       .domain([0, m - 1])
       .range([0, width]);
     const y = d3.scaleLinear().domain([0, 1]).range([height, 0]);
-    const z = isSpiderman ? d3.interpolateRgb("red", "blue") : d3.interpolateCool; /* CHANGE COLOR FOR SPIDERMAN MODE */
+    const z = isSpiderman
+      ? d3.interpolateRgb("red", "blue")
+      : d3.interpolateCool; /* CHANGE COLOR FOR SPIDERMAN MODE */
 
     const area = d3
       .area()
@@ -78,12 +95,16 @@ const VisualComponent = () => {
       path
         .data(randomize)
         .transition()
-        .delay(0) /*CHANGE DELAY TO DEPEND ON HEART RATE*/
-        .duration(100) /* CHANGE DURATION */
+        .delay(data ? (isSpiderman ? data.minBPM * 2 : data.maxBPM * 2000) :100) /*CHANGE DELAY TO DEPEND ON HEART RATE*/
+        .duration(data ? (isSpiderman ? data.minBPM * 2 : data.maxBPM * 2000) :100) /* CHANGE DURATION */
         .attr("d", area);
     }
 
-    d3.interval(update, 100); /* CHANGE INTERVAL */
+    d3.interval(
+      update, 
+      data ? (isSpiderman ? data.minBPM * 2 : data.maxBPM * 2000) :100
+
+    ); /* CHANGE INTERVAL */
   }, [isSpiderman]);
 
   return <svg ref={svgRef}></svg>;

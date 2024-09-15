@@ -118,7 +118,7 @@
         "zone": 6
       }
     ],
-    "max_hr_bpm": 175,
+    "max_hr_bpm": 10,
     "avg_hrv_rmssd": null,
     "min_hr_bpm": 70,
     "avg_hr_bpm": 59.422208896241884,

@@ -2,12 +2,9 @@
 
 import { SignOutButton, UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "@mui/material";
-// import { ConnectToTerraButton } from "@tryterra/terra-ui";
-import { useRouter } from "next/navigation";
 
 const TopBar = () => {
   const { isLoaded, isSignedIn, user } = useUser();
-  const router = useRouter()
 
   return (
     <div className="sticky bg-slate-700 p-4 flex items-center justify-between rounded-lg mt-4 m-2">

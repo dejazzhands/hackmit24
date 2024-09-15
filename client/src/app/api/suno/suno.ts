@@ -1,20 +1,36 @@
-import fs from 'fs';
-import path from 'path';
+import fs from "fs";
+import path from "path";
+
+function mapBPMToString(bpm: number) {
+  if (bpm <= 70) {
+    return "slow";
+  } else if (bpm <= 100) {
+    return "normal";
+  } else {
+    return "fast";
+  }
+}
 
 export default async function getData() {
   try {
-    // Define the storage path
-    const storagePath = path.join(process.cwd(), 'data', 'heart_rate_data.json');
+    const storagePath = path.join(
+      process.cwd(),
+      "data",
+      "heart_rate_data.json"
+    );
 
-    // Read the heart rate data from the file
-    const data = await fs.promises.readFile(storagePath, 'utf8');
+    const data = await fs.promises.readFile(storagePath, "utf8");
     const heartRateData = JSON.parse(data);
 
-    // Log the heart rate data for debugging
-    console.log("Read heart ratAe data:", heartRateData);
-    return heartRateData;
-  }
-  catch {
-    console.error('Error reading heart rate data');
+    console.log("Read heart rate data: ", heartRateData);
+
+    return {
+      minString: mapBPMToString(heartRateData.summary.min_hr_bpm),
+      maxString: mapBPMToString(heartRateData.summary.max_hr_bpm),
+      minBPM: heartRateData.summary.min_hr_bpm,
+      maxBPM: heartRateData.summary.max_hr_bpm,
+    };
+  } catch {
+    console.error("Error reading heart rate data");
   }
 }
