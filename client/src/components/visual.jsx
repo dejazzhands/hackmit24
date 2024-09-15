@@ -11,22 +11,6 @@ const m = 200; // number of samples per
 const VisualComponent = () => {
   const { isSpiderman } = useSpidermanContext();
   const svgRef = useRef(null);
-  const [data, setData] = useState(null);
-
-  console.log(data);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch("/api/visual", {
-        method: "GET",
-      });
-      const data = await response.json();
-      if (!response.ok) setData(null);
-
-      setData(data);
-    };
-    fetchData();
-  }, []);
 
   useEffect(() => {
     function bump(a, n) {
@@ -95,16 +79,12 @@ const VisualComponent = () => {
       path
         .data(randomize)
         .transition()
-        .delay(data ? (isSpiderman ? data.minBPM * 2 : data.maxBPM * 2000) :100) /*CHANGE DELAY TO DEPEND ON HEART RATE*/
-        .duration(data ? (isSpiderman ? data.minBPM * 2 : data.maxBPM * 2000) :100) /* CHANGE DURATION */
+        .delay(isSpiderman ? 100 : 200) /*CHANGE DELAY TO DEPEND ON HEART RATE*/
+        .duration(100) /* CHANGE DURATION */
         .attr("d", area);
     }
 
-    d3.interval(
-      update, 
-      data ? (isSpiderman ? data.minBPM * 2 : data.maxBPM * 2000) :100
-
-    ); /* CHANGE INTERVAL */
+    d3.interval(update, isSpiderman ? 100 : 200); /* CHANGE INTERVAL */
   }, [isSpiderman]);
 
   return <svg ref={svgRef}></svg>;
