@@ -16,7 +16,7 @@ const payload = (heartRateData: HeartRateData) => {
   };
 };
 
-export async function POST(request: Request) {
+export async function POST() {
   // const {isSpiderman, request.json()
   try {
     const bpmData = await getData();
