@@ -3,16 +3,18 @@ import localFont from "next/font/local";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider, SignedIn, SignedOut } from "@clerk/nextjs";
-import SignInBtn from "./components/SignInBtn";
-import TopBar from "./components/TopBar";
+import SignInBtn from "../components/SignInBtn";
+import TopBar from "../components/TopBar";
+import { SpidermanProvider } from "@/context/Spiderman";
+import SpidermanButton from "../components/SpidermanButton";
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "/assets/fonts/GeistVF.woff",
   variable: "--font-geist-sans",
   weight: "100 900",
 });
 const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
+  src: "/assets/fonts/GeistMonoVF.woff",
   variable: "--font-geist-mono",
   weight: "100 900",
 });
@@ -35,22 +37,25 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-      <html lang="en">
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased grid min-h-[100dvh] grid-rows-[auto_1fr_auto]`}
-        >
-          <SignedOut>
-            <div />
-            <div className="flex justify-center items-center">
-              <SignInBtn />
-            </div>
-          </SignedOut>
-          <SignedIn>
-            <TopBar />
-            {children}
-          </SignedIn>
-        </body>
-      </html>
+      <SpidermanProvider>
+        <html lang="en">
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} ${roboto.variable} antialiased grid min-h-[100dvh] grid-rows-[auto_1fr_auto] relative`}
+          >
+            <SignedOut>
+              <div />
+              <div className="flex justify-center items-center">
+                <SignInBtn />
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <TopBar />
+              {children}
+              <SpidermanButton />
+            </SignedIn>
+          </body>
+        </html>
+      </SpidermanProvider>
     </ClerkProvider>
   );
 }

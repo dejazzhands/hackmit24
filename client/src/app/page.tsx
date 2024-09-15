@@ -1,5 +1,5 @@
-import React from 'react';
-import VisualComponent from './components/visual';
+import React from "react";
+import VisualComponent from "../components/visual";
 
 export default function Home() {
   return (
