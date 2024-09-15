@@ -1,0 +1,128 @@
+{
+  "detailed": {
+    "hrv_samples_rmssd": [],
+    "hr_samples": [
+      {
+        "timestamp": "2024-09-15T10:34:04.847000+00:00",
+        "bpm": 175,
+        "context": 0,
+        "timer_duration_seconds": 0
+      },
+      {
+        "timestamp": "2024-09-15T10:39:04.847000+00:00",
+        "bpm": 170,
+        "context": 0,
+        "timer_duration_seconds": 5
+      },
+      {
+        "timestamp": "2024-09-15T10:44:04.847000+00:00",
+        "bpm": 132,
+        "context": 0,
+        "timer_duration_seconds": 10
+      },
+      {
+        "timestamp": "2024-09-15T10:49:04.847000+00:00",
+        "bpm": 90,
+        "context": 0,
+        "timer_duration_seconds": 15
+      },
+      {
+        "timestamp": "2024-09-15T10:54:04.847000+00:00",
+        "bpm": 77,
+        "context": 0,
+        "timer_duration_seconds": 20
+      },
+      {
+        "timestamp": "2024-09-15T10:59:04.847000+00:00",
+        "bpm": 82,
+        "context": 0,
+        "timer_duration_seconds": 25
+      },
+      {
+        "timestamp": "2024-09-15T11:04:04.847000+00:00",
+        "bpm": 70,
+        "context": 0,
+        "timer_duration_seconds": 30
+      },
+      {
+        "timestamp": "2024-09-15T11:09:04.847000+00:00",
+        "bpm": 95,
+        "context": 0,
+        "timer_duration_seconds": 35
+      },
+      {
+        "timestamp": "2024-09-15T11:14:04.847000+00:00",
+        "bpm": 75,
+        "context": 0,
+        "timer_duration_seconds": 40
+      },
+      {
+        "timestamp": "2024-09-15T11:19:04.847000+00:00",
+        "bpm": 114,
+        "context": 0,
+        "timer_duration_seconds": 45
+      }
+    ],
+    "hrv_samples_sdnn": []
+  },
+  "summary": {
+    "user_max_hr_bpm": null,
+    "hr_zone_data": [
+      {
+        "duration_seconds": 399,
+        "name": "Resting",
+        "end_percentage": 50,
+        "start_percentage": 0,
+        "zone": 0
+      },
+      {
+        "duration_seconds": 111,
+        "name": "Very light",
+        "end_percentage": 60,
+        "start_percentage": 50,
+        "zone": 1
+      },
+      {
+        "duration_seconds": 125,
+        "name": "Light",
+        "end_percentage": 70,
+        "start_percentage": 60,
+        "zone": 2
+      },
+      {
+        "duration_seconds": 572,
+        "name": "Moderate",
+        "end_percentage": 80,
+        "start_percentage": 70,
+        "zone": 3
+      },
+      {
+        "duration_seconds": 591,
+        "name": "Hard",
+        "end_percentage": 90,
+        "start_percentage": 80,
+        "zone": 4
+      },
+      {
+        "duration_seconds": 303,
+        "name": "Maximum",
+        "end_percentage": 100,
+        "start_percentage": 90,
+        "zone": 5
+      },
+      {
+        "duration_seconds": 234,
+        "name": null,
+        "end_percentage": 77,
+        "start_percentage": 52,
+        "zone": 6
+      }
+    ],
+    "max_hr_bpm": 175,
+    "avg_hrv_rmssd": null,
+    "min_hr_bpm": 70,
+    "avg_hr_bpm": 59.422208896241884,
+    "resting_hr_bpm": 44.771140788201066,
+    "avg_hrv_sdnn": null
+  }
+}
