@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "json-server --watch ./src/app/api/db.json"
   },
   "dependencies": {
     "@clerk/nextjs": "^5.5.2",
@@ -15,6 +16,7 @@
     "@mui/icons-material": "^6.1.0",
     "@mui/material": "^6.1.0",
     "d3": "^7.9.0",
+    "json-server": "^1.0.0-beta.2",
     "next": "14.2.11",
     "react": "^18",
     "react-dom": "^18"
